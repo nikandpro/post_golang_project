@@ -1,0 +1,20 @@
+{{ define "sign" }}
+
+{{ template "header" }}
+
+``<main class="px-3">
+    <h1 class="cover-heading">Войти в аккаунт</h1>
+    <form action="/sign_user" method="post">
+        <input type="text" name="name" id="name" placeholder="Введите username" class="form-control">
+        <br>
+        <textarea name="age" id="age" class="form-control" placeholder="Введите возраст"></textarea>
+        <br>
+        <textarea type="password" name="password" id="password" class="form-control" placeholder="Введите пароль"></textarea>
+        <br>
+        <button class="btn btn-warning">Войти</button>
+    </form>
+    
+  </main>
+
+{{ end }}
+
