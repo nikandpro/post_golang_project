@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"backend/basic/pkg/models"
+	"backend/basic/pkg/vars"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -23,7 +24,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, err.Error())
 	}
 
-	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/posts")
+	db, err := sql.Open(vars.DBSQL, vars.DBConn+vars.DBName)
 	if err != nil {
 		panic(err)
 	}
@@ -66,7 +67,7 @@ func Save_article(w http.ResponseWriter, r *http.Request) {
 	if title == "" || anons == "" || full_text == "" {
 		fmt.Fprintf(w, "Не все данные заполные")
 	} else {
-		db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/posts")
+		db, err := sql.Open(vars.DBSQL, vars.DBConn+vars.DBName)
 		if err != nil {
 			panic(err)
 		}
@@ -96,7 +97,7 @@ func Sign(w http.ResponseWriter, r *http.Request) {
 }
 
 func Show_post(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
+	varsURL := mux.Vars(r)
 
 	t, err := template.ParseFiles("templates/show.html", "templates/header.html", "templates/footer.html")
 
@@ -104,14 +105,14 @@ func Show_post(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, err.Error())
 	}
 
-	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/posts")
+	db, err := sql.Open(vars.DBSQL, vars.DBConn+vars.DBName)
 	if err != nil {
 		panic(err)
 	}
 
 	defer db.Close()
 
-	res, err := db.Query(fmt.Sprintf("SELECT * FROM `articles` WHERE `id` = '%s'", vars["id"]))
+	res, err := db.Query(fmt.Sprintf("SELECT * FROM `articles` WHERE `id` = '%s'", varsURL["id"]))
 	if err != nil {
 		panic(err)
 	}
@@ -137,7 +138,7 @@ func Sign_user(w http.ResponseWriter, r *http.Request) {
 	if name == "" || age == "" || password == "" {
 		fmt.Fprintf(w, "Не все данные заполные")
 	} else {
-		db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/posts")
+		db, err := sql.Open(vars.DBSQL, vars.DBConn+vars.DBName)
 		if err != nil {
 			panic(err)
 		}

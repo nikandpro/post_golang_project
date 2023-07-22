@@ -2,12 +2,14 @@ package handlers
 
 import (
 	"backend/basic/pkg/models"
+	"backend/basic/pkg/vars"
 	"database/sql"
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"golang.org/x/crypto/bcrypt"
+
 	"github.com/gorilla/mux"
+	"golang.org/x/crypto/bcrypt"
 )
 
 //CRUD
@@ -19,7 +21,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Bad request", http.StatusBadRequest)
 		panic(err)
 	}
-	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/posts")
+	db, err := sql.Open(vars.DBSQL, vars.DBConn+vars.DBName)
 	if err != nil {
 		panic(err)
 	}
@@ -57,7 +59,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUsers(w http.ResponseWriter, r *http.Request) {
-	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/posts")
+	db, err := sql.Open(vars.DBSQL, vars.DBConn+vars.DBName)
 	if err != nil {
 		panic(err)
 	}
@@ -88,16 +90,16 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
+	varsURL := mux.Vars(r)
 	
-	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/posts")
+	db, err := sql.Open(vars.DBSQL, vars.DBConn+vars.DBName)
 	if err != nil {
 		panic(err)
 	}
 
 	defer db.Close()
 
-	res, err := db.Query(fmt.Sprintf("SELECT * FROM `users` WHERE `id` = '%s'", vars["id"]))
+	res, err := db.Query(fmt.Sprintf("SELECT * FROM `users` WHERE `id` = '%s'", varsURL["id"]))
 	if err != nil {
 		panic(err)
 	}
@@ -130,7 +132,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/posts")
+	db, err := sql.Open(vars.DBSQL, vars.DBConn+vars.DBName)
 	if err != nil {
 		panic(err)
 	}
@@ -152,10 +154,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id := vars["id"]
+	varsURL := mux.Vars(r)
+	id := varsURL["id"]
 	
-	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/posts")
+	db, err := sql.Open(vars.DBSQL, vars.DBConn+vars.DBName)
 	if err != nil {
 		panic(err)
 	}
@@ -180,10 +182,10 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id := vars["id"]
+	varsURL := mux.Vars(r)
+	id := varsURL["id"]
 	
-	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/posts")
+	db, err := sql.Open(vars.DBSQL, vars.DBConn+vars.DBName)
 	if err != nil {
 		panic(err)
 	}
