@@ -29,6 +29,14 @@ func InitRoutes() http.Handler {
 	rtr.HandleFunc("/users/{id}",handlers.UpdateUser).Methods("PUT")
 	rtr.HandleFunc("/users/{id}",handlers.DeleteUser).Methods("DELETE")
 
+	//CRUD Posts
+	//CRUD User
+	rtr.HandleFunc("/posts", handlers.GetPosts).Methods("GET")
+	rtr.HandleFunc("/posts/{id}",handlers.GetPost).Methods("GET")
+	rtr.HandleFunc("/posts" , handlers.CreatePost).Methods("POST")
+	rtr.HandleFunc("/posts/{id}",handlers.UpdatePost).Methods("PUT")
+	rtr.HandleFunc("/posts/{id}",handlers.DeletePost).Methods("DELETE")
+
 
 	return rtr
 }
