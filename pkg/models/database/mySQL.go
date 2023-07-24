@@ -32,8 +32,8 @@ func InitTables() {
 	if _, err = db.Exec(fmt.Sprint(`
 	CREATE TABLE IF NOT EXISTS users (
 		id INT NOT NULL AUTO_INCREMENT,
-		name VARCHAR(50) NOT NULL DEFAULT '',
-		age VARCHAR(50) NOT NULL DEFAULT '',
+		name VARCHAR(20) NOT NULL DEFAULT '',
+		age INT NOT NULL DEFAULT '',
 		password VARCHAR(255) NOT NULL DEFAULT ''
 	  );`)); err != nil {
 		panic(err)
@@ -42,8 +42,8 @@ func InitTables() {
 	if _, err = db.Exec(fmt.Sprint(`
 	CREATE TABLE IF NOT EXISTS articles (
 		id INT NOT NULL AUTO_INCREMENT,
-		title text NOT NULL DEFAULT '',
-		anons text NOT NULL DEFAULT '',
+		title VARCHAR(100) NOT NULL DEFAULT '',
+		anons VARCHAR(300) NOT NULL DEFAULT '',
 		full_text text NOT NULL DEFAULT ''
 	  );`)); err != nil {
 		panic(err)
